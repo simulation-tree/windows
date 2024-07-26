@@ -5,18 +5,18 @@ namespace Windows.Events
 {
     public readonly struct DeviceButtonReleased
     {
-        public readonly EntityID device;
+        public readonly eint device;
         public readonly RuntimeType deviceType;
         public readonly uint control;
 
-        private DeviceButtonReleased(EntityID device, RuntimeType deviceType, uint control)
+        private DeviceButtonReleased(eint device, RuntimeType deviceType, uint control)
         {
             this.device = device;
             this.deviceType = deviceType;
             this.control = control;
         }
 
-        public static DeviceButtonReleased Create<T>(EntityID device, uint control) where T : unmanaged, IInputDevice
+        public static DeviceButtonReleased Create<T>(eint device, uint control) where T : unmanaged, IInputDevice
         {
             return new(device, RuntimeType.Get<T>(), control);
         }

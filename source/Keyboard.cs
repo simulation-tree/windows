@@ -1,37 +1,23 @@
 ﻿using Simulation;
 using System;
+using Unmanaged;
 using Windows.Components;
 
 namespace Windows
 {
-    public readonly struct Keyboard : IDisposable, IInputDevice
+    public readonly struct Keyboard : IKeyboard, IDisposable
     {
         public readonly Entity entity;
 
-        public readonly bool IsDestroyed => entity.IsDestroyed;
-        public readonly ButtonState this[uint index]
-        {
-            get
-            {
-                bool pressed = State.IsKeyDown(index);
-                bool wasPressed = entity.GetComponent<LastKeyboardState>().value.IsKeyDown(index);
-                return new(wasPressed, pressed);
-            }
-        }
-
-        public readonly ButtonState this[Button control] => this[(uint)control];
-
-        private readonly ref KeyboardState State => ref entity.GetComponentRef<IsKeyboard>().state;
-
         World IEntity.World => entity.world;
-        EntityID IEntity.Value => entity;
+        eint IEntity.Value => entity.value;
 
         public Keyboard()
         {
             throw new InvalidOperationException("Cannot create a keyboard without a world.");
         }
 
-        public Keyboard(World world, EntityID existingEntity)
+        public Keyboard(World world, eint existingEntity)
         {
             entity = new(world, existingEntity);
         }
@@ -49,15 +35,9 @@ namespace Windows
             entity.Dispose();
         }
 
-        public readonly bool IsKeyDown(uint index)
+        static Query IEntity.GetQuery(World world)
         {
-            return State.IsKeyDown(index);
-        }
-
-        public readonly void SetKeyDown(uint index, bool value, TimeSpan timeStamp)
-        {
-            entity.SetComponent(new LastDeviceUpdateTime(timeStamp));
-            State.SetKeyDown(index, value);
+            return new Query(world, RuntimeType.Get<IsKeyboard>());
         }
 
         public enum Button : ushort

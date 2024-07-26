@@ -9,6 +9,12 @@ namespace Windows.Components
 
         private fixed ulong keys[5];
 
+        public bool this[uint index]
+        {
+            get => IsKeyDown(index);
+            set => SetKeyDown(index, value);
+        }
+
         [Conditional("DEBUG")]
         private readonly void ThrowIfOutOfRange(uint index)
         {

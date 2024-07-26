@@ -6,9 +6,9 @@ namespace Windows.Components
 {
     public unsafe struct WindowCloseCallback
     {
-        private delegate* unmanaged<World, EntityID, void> value;
+        private delegate* unmanaged<World, eint, void> value;
 
-        public WindowCloseCallback(delegate* unmanaged<World, EntityID, void> value)
+        public WindowCloseCallback(delegate* unmanaged<World, eint, void> value)
         {
             this.value = value;
         }
@@ -22,7 +22,7 @@ namespace Windows.Components
             }
         }
 
-        public readonly void Invoke(World world, EntityID entity)
+        public readonly void Invoke(World world, eint entity)
         {
             ThrowIfDisposed();
             value(world, entity);

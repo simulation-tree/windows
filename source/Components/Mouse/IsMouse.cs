@@ -8,14 +8,14 @@ namespace Windows.Components
 
         public Vector2 Position
         {
-            readonly get => state.position;
-            set => state = new(value, state.scroll, state.buttons);
+            readonly get => new(state.positionX, state.positionY);
+            set => state = new((int)value.X, (int)value.Y, state.scrollX, state.scrollY, state.buttons);
         }
 
         public Vector2 Scroll
         {
-            readonly get => state.scroll;
-            set => state = new(state.position, value, state.buttons);
+            readonly get => new(state.scrollX, state.scrollY);
+            set => state = new(state.positionX, state.positionY, (int)value.X, (int)value.Y, state.buttons);
         }
 
         public IsMouse(MouseState state)

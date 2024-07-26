@@ -1,11 +1,11 @@
-﻿using System.Numerics;
-
-namespace Windows.Components
+﻿namespace Windows.Components
 {
     public struct MouseState
     {
-        public Vector2 position;
-        public Vector2 scroll;
+        public int positionX;
+        public int positionY;
+        public int scrollX;
+        public int scrollY;
         public byte buttons;
 
         public bool this[Mouse.Button button]
@@ -30,10 +30,12 @@ namespace Windows.Components
             }
         }
 
-        public MouseState(Vector2 position, Vector2 scroll, byte buttons = default)
+        public MouseState(int positionX, int positionY, int scrollX, int scrollY, byte buttons = default)
         {
-            this.position = position;
-            this.scroll = scroll;
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.scrollX = scrollX;
+            this.scrollY = scrollY;
             this.buttons = buttons;
         }
     }

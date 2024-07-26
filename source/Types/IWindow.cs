@@ -2,7 +2,7 @@
 
 namespace Windows
 {
-    public interface IInputDevice : IEntity
+    public interface IWindow : IEntity
     {
     }
 }

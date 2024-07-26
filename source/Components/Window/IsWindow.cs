@@ -41,18 +41,18 @@ namespace Windows.Components
             }
         }
 
-        public bool IsHidden
+        public bool IsMinimized
         {
-            readonly get => (flags & Flags.Hidden) != 0;
+            readonly get => (flags & Flags.Minimized) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.Hidden;
+                    flags |= Flags.Minimized;
                 }
                 else
                 {
-                    flags &= ~Flags.Hidden;
+                    flags &= ~Flags.Minimized;
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace Windows.Components
             Borderless = 1,
             Resizable = 2,
             Focused = 4,
-            Hidden = 8
+            Minimized = 8
         }
     }
 }
