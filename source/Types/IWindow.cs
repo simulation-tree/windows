@@ -1,8 +1,8 @@
-﻿using Simulation;
+﻿using Rendering;
 
 namespace Windows
 {
-    public interface IWindow : IEntity
+    public interface IWindow : IDestination
     {
     }
 }
