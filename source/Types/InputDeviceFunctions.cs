@@ -10,20 +10,23 @@ public static class InputDeviceFunctions
         lastUpdateTime = new(timestamp);
     }
 
-    public static ButtonState GetButtonState<T>(this T inputDevice, uint control) where T : IInputDevice
+    public unsafe static ButtonState GetButtonState<T, C>(this T inputDevice, C control) where T : IInputDevice where C : unmanaged
     {
+        uint controlIndex = *(uint*)&control;
         Type type = typeof(T);
+
+        //todo: ugly switch that theoretically doesnt need to exist, due to different components per device type
         if (typeof(IKeyboard).IsAssignableFrom(type))
         {
             KeyboardState state = inputDevice.GetComponent<T, IsKeyboard>().state;
             KeyboardState lastState = inputDevice.GetComponent<T, LastKeyboardState>().value;
-            return new ButtonState(state[control], lastState[control]);
+            return new ButtonState(state[controlIndex], lastState[controlIndex]);
         }
         else if (typeof(IMouse).IsAssignableFrom(type))
         {
             MouseState state = inputDevice.GetComponent<T, IsMouse>().state;
             MouseState lastState = inputDevice.GetComponent<T, LastMouseState>().value;
-            return new ButtonState(state[control], lastState[control]);
+            return new ButtonState(state[controlIndex], lastState[controlIndex]);
         }
         else
         {
@@ -31,18 +34,19 @@ public static class InputDeviceFunctions
         }
     }
 
-    public static bool IsPressed<T>(this T inputDevice, uint control) where T : IInputDevice
+    public unsafe static bool IsPressed<T, C>(this T inputDevice, C control) where T : IInputDevice where C : unmanaged
     {
+        uint controlIndex = *(uint*)&control;
         Type type = typeof(T);
         if (typeof(IKeyboard).IsAssignableFrom(type))
         {
             KeyboardState state = inputDevice.GetComponent<T, IsKeyboard>().state;
-            return state[control];
+            return state[controlIndex];
         }
         else if (typeof(IMouse).IsAssignableFrom(type))
         {
             MouseState state = inputDevice.GetComponent<T, IsMouse>().state;
-            return state[control];
+            return state[controlIndex];
         }
         else
         {
@@ -50,13 +54,13 @@ public static class InputDeviceFunctions
         }
     }
 
-    public static bool WasPressed<T>(this T inputDevice, uint control) where T : IInputDevice
+    public static bool WasPressed<T, C>(this T inputDevice, C control) where T : IInputDevice where C : unmanaged
     {
         ButtonState buttonState = inputDevice.GetButtonState(control);
         return buttonState.WasPressed;
     }
 
-    public static bool WasReleased<T>(this T inputDevice, uint control) where T : IInputDevice
+    public static bool WasReleased<T, C>(this T inputDevice, C control) where T : IInputDevice where C : unmanaged
     {
         ButtonState buttonState = inputDevice.GetButtonState(control);
         return buttonState.WasReleased;

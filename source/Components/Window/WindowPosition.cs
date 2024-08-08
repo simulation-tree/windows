@@ -5,40 +5,26 @@ namespace Windows.Components
 {
     public struct WindowPosition : IEquatable<WindowPosition>
     {
-        public int x;
-        public int y;
+        public Vector2 value;
 
         public WindowPosition(Vector2 value)
         {
-            x = (int)value.X;
-            y = (int)value.Y;
+            this.value = value;
         }
 
-        public WindowPosition(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
-        public readonly Vector2 AsVector2()
-        {
-            return new(x, y);
-        }
-
-        public override bool Equals(object? obj)
+        public readonly override bool Equals(object? obj)
         {
             return obj is WindowPosition position && Equals(position);
         }
 
-        public bool Equals(WindowPosition other)
+        public readonly bool Equals(WindowPosition other)
         {
-            return x == other.x &&
-                   y == other.y;
+            return value.Equals(other.value);
         }
 
-        public override int GetHashCode()
+        public readonly override int GetHashCode()
         {
-            return HashCode.Combine(x, y);
+            return value.GetHashCode();
         }
 
         public static bool operator ==(WindowPosition left, WindowPosition right)

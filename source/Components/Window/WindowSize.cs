@@ -5,40 +5,26 @@ namespace Windows.Components
 {
     public struct WindowSize : IEquatable<WindowSize>
     {
-        public uint width;
-        public uint height;
+        public Vector2 value;
 
         public WindowSize(Vector2 value)
         {
-            width = (uint)value.X;
-            height = (uint)value.Y;
+            this.value = value;
         }
 
-        public WindowSize(uint width, uint height)
-        {
-            this.width = width;
-            this.height = height;
-        }
-
-        public readonly Vector2 AsVector2()
-        {
-            return new(width, height);
-        }
-
-        public override bool Equals(object? obj)
+        public readonly override bool Equals(object? obj)
         {
             return obj is WindowSize size && Equals(size);
         }
 
-        public bool Equals(WindowSize other)
+        public readonly bool Equals(WindowSize other)
         {
-            return width == other.width &&
-                   height == other.height;
+            return value.Equals(other.value);
         }
 
-        public override int GetHashCode()
+        public readonly override int GetHashCode()
         {
-            return HashCode.Combine(width, height);
+            return value.GetHashCode();
         }
 
         public static bool operator ==(WindowSize left, WindowSize right)

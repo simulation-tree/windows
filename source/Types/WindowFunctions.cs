@@ -4,16 +4,16 @@ using Windows.Components;
 
 public static class WindowFunctions
 {
-    public static Vector2 GetPositionAsVector2<T>(this T window) where T : IWindow
+    public static Vector2 GetPosition<T>(this T window) where T : IWindow
     {
         ref WindowPosition windowPosition = ref window.GetComponentRef<T, WindowPosition>();
-        return new(windowPosition.x, windowPosition.y);
+        return windowPosition.value;
     }
 
-    public static Vector2 GetSizeAsVector2<T>(this T window) where T : IWindow
+    public static Vector2 GetSize<T>(this T window) where T : IWindow
     {
         ref WindowSize windowSize = ref window.GetComponentRef<T, WindowSize>();
-        return new(windowSize.width, windowSize.height);
+        return windowSize.value;
     }
 
     public static void SetPosition<T>(this T window, Vector2 position) where T : IWindow
