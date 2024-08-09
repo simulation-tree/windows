@@ -10,10 +10,10 @@ namespace Windows
 {
     public readonly struct Window : IWindow, IDisposable
     {
-        public readonly Entity entity;
+        private readonly Destination entity;
 
-        eint IEntity.Value => entity.value;
-        World IEntity.World => entity.world;
+        eint IEntity.Value => entity.GetEntityValue();
+        World IEntity.World => entity.GetWorld();
 
         public Window()
         {
@@ -27,8 +27,7 @@ namespace Windows
 
         public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
-            Destination destination = new(world, size, renderer);
-            entity = destination.entity;
+            entity = new(world, size, renderer);
             entity.AddComponent(new IsWindow(title));
             entity.AddComponent(new WindowPosition(position));
             entity.AddComponent(new WindowSize(size));
