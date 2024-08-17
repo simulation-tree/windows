@@ -7,10 +7,10 @@ namespace Windows
 {
     public readonly struct Keyboard : IKeyboard, IDisposable
     {
-        private readonly Entity entity;
+        private readonly InputDevice entity;
 
-        World IEntity.World => entity.world;
-        eint IEntity.Value => entity.value;
+        World IEntity.World => ((Entity)entity).world;
+        eint IEntity.Value => ((Entity)entity).value;
 
         public Keyboard()
         {
@@ -25,9 +25,8 @@ namespace Windows
         public Keyboard(World world)
         {
             entity = new(world);
-            entity.AddComponent(new IsKeyboard());
-            entity.AddComponent(new LastKeyboardState());
-            entity.AddComponent(new LastDeviceUpdateTime());
+            ((Entity)entity).AddComponent(new IsKeyboard());
+            ((Entity)entity).AddComponent(new LastKeyboardState());
         }
 
         public readonly void Dispose()
@@ -38,6 +37,34 @@ namespace Windows
         Query IEntity.GetQuery(World world)
         {
             return new Query(world, RuntimeType.Get<IsKeyboard>());
+        }
+
+        public readonly KeyboardState GetState()
+        {
+            ref IsKeyboard state = ref ((Entity)entity).GetComponentRef<IsKeyboard>();
+            return state.state;
+        }
+
+        public readonly KeyboardState GetLastState()
+        {
+            ref LastKeyboardState lastState = ref ((Entity)entity).GetComponentRef<LastKeyboardState>();
+            return lastState.value;
+        }
+
+        public readonly void SetKeyDown(uint control, bool pressed, TimeSpan timestamp)
+        {
+            ref IsKeyboard state = ref ((Entity)entity).GetComponentRef<IsKeyboard>();
+            state.state.SetKeyDown(control, pressed);
+
+            entity.SetUpdateTime(timestamp);
+        }
+
+        unsafe readonly ButtonState IInputDevice.GetButtonState<C>(C control)
+        {
+            uint controlIndex = *(uint*)&control;
+            KeyboardState state = ((Entity)entity).GetComponent<IsKeyboard>().state;
+            KeyboardState lastState = ((Entity)entity).GetComponent<LastKeyboardState>().value;
+            return new ButtonState(state[controlIndex], lastState[controlIndex]);
         }
 
         public enum Button : ushort

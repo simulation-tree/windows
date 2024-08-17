@@ -1,5 +1,6 @@
 ﻿using Simulation;
 using System;
+using System.Numerics;
 using Unmanaged;
 using Windows.Components;
 
@@ -7,10 +8,28 @@ namespace Windows
 {
     public readonly struct Mouse : IMouse, IDisposable
     {
-        private readonly Entity entity;
+        private readonly InputDevice device;
 
-        World IEntity.World => entity.world;
-        eint IEntity.Value => entity.value;
+        public readonly Vector2 Position
+        {
+            get
+            {
+                ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+                return state.Position;
+            }
+        }
+
+        public readonly Vector2 Scroll
+        {
+            get
+            {
+                ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+                return state.Scroll;
+            }
+        }
+
+        World IEntity.World => ((Entity)device).world;
+        eint IEntity.Value => ((Entity)device).value;
 
         public Mouse()
         {
@@ -19,25 +38,62 @@ namespace Windows
 
         public Mouse(World world, eint existingEntity)
         {
-            entity = new(world, existingEntity);
+            device = new(world, existingEntity);
         }
 
         public Mouse(World world)
         {
-            entity = new(world);
-            entity.AddComponent(new IsMouse());
-            entity.AddComponent(new LastMouseState());
-            entity.AddComponent(new LastDeviceUpdateTime());
+            device = new(world);
+            ((Entity)device ).AddComponent(new IsMouse());
+            ((Entity)device ).AddComponent(new LastMouseState());
         }
 
         public readonly void Dispose()
         {
-            entity.Dispose();
+            device.Dispose();
         }
 
         Query IEntity.GetQuery(World world)
         {
             return new Query(world, RuntimeType.Get<IsMouse>());
+        }
+
+        public readonly void SetPosition(Vector2 position, TimeSpan timestamp)
+        {
+            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            state.Position = position;
+
+            device.SetUpdateTime(timestamp);
+        }
+
+        public readonly void AddScroll(Vector2 scroll, TimeSpan timestamp)
+        {
+            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            state.Scroll = scroll;
+
+            device.SetUpdateTime(timestamp);
+        }
+
+        public readonly bool IsButtonDown(uint control)
+        {
+            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            return state.state[control];
+        }
+
+        public readonly void SetButtonDown(uint control, bool pressed, TimeSpan timestamp)
+        {
+            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            state.state[control] = pressed;
+
+            device.SetUpdateTime(timestamp);
+        }
+
+        readonly unsafe ButtonState IInputDevice.GetButtonState<C>(C control)
+        {
+            uint controlIndex = *(uint*)&control;
+            MouseState state = ((Entity)device).GetComponent<IsMouse>().state;
+            MouseState lastState = ((Entity)device).GetComponent<LastMouseState>().value;
+            return new ButtonState(state[controlIndex], lastState[controlIndex]);
         }
 
         public enum Button : byte

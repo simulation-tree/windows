@@ -2,9 +2,9 @@
 
 namespace Windows.Components
 {
-    public readonly struct LastDeviceUpdateTime
+    public struct LastDeviceUpdateTime
     {
-        public readonly TimeSpan value;
+        public TimeSpan value;
 
         public LastDeviceUpdateTime(TimeSpan value)
         {
