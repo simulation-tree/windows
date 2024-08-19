@@ -131,9 +131,6 @@ namespace Windows
             windowEntity.AddComponent(new WindowPosition(position));
             windowEntity.AddComponent(new WindowSize(size));
             windowEntity.AddComponent(closeCallback);
-
-            world.Submit(new WindowUpdate());
-            world.Poll();
         }
 
         public readonly void Dispose()
