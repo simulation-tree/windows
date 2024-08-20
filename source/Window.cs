@@ -4,11 +4,10 @@ using System;
 using System.Numerics;
 using Unmanaged;
 using Windows.Components;
-using Windows.Events;
 
 namespace Windows
 {
-    public readonly struct Window : IWindow, IDisposable
+    public readonly struct Window : IEntity, IDisposable
     {
         private readonly Destination entity;
 
