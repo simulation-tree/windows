@@ -35,7 +35,7 @@ namespace Windows
 
         public readonly void SetUpdateTime(TimeSpan timestamp)
         {
-            ref LastDeviceUpdateTime state = ref entity.GetComponentRef<LastDeviceUpdateTime>();
+            ref LastDeviceUpdateTime state = ref entity.GetComponent<LastDeviceUpdateTime>();
             state.value = timestamp;
         }
 

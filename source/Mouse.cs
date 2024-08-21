@@ -14,7 +14,7 @@ namespace Windows
         {
             get
             {
-                ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+                ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
                 return state.Position;
             }
         }
@@ -23,7 +23,7 @@ namespace Windows
         {
             get
             {
-                ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+                ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
                 return state.Scroll;
             }
         }
@@ -61,7 +61,7 @@ namespace Windows
 
         public readonly void SetPosition(Vector2 position, TimeSpan timestamp)
         {
-            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
             state.Position = position;
 
             device.SetUpdateTime(timestamp);
@@ -69,7 +69,7 @@ namespace Windows
 
         public readonly void AddScroll(Vector2 scroll, TimeSpan timestamp)
         {
-            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
             state.Scroll = scroll;
 
             device.SetUpdateTime(timestamp);
@@ -77,13 +77,13 @@ namespace Windows
 
         public readonly bool IsButtonDown(uint control)
         {
-            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
             return state.state[control];
         }
 
         public readonly void SetButtonDown(uint control, bool pressed, TimeSpan timestamp)
         {
-            ref IsMouse state = ref ((Entity)device).GetComponentRef<IsMouse>();
+            ref IsMouse state = ref ((Entity)device).GetComponent<IsMouse>();
             state.state[control] = pressed;
 
             device.SetUpdateTime(timestamp);
