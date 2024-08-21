@@ -7,10 +7,10 @@ namespace Windows
 {
     public readonly struct Keyboard : IKeyboard, IDisposable
     {
-        private readonly InputDevice entity;
+        private readonly InputDevice device;
 
-        World IEntity.World => ((Entity)entity).world;
-        eint IEntity.Value => ((Entity)entity).value;
+        World IEntity.World => (Entity)device;
+        eint IEntity.Value => (Entity)device;
 
         public Keyboard()
         {
@@ -19,19 +19,20 @@ namespace Windows
 
         public Keyboard(World world, eint existingEntity)
         {
-            entity = new(world, existingEntity);
+            device = new(world, existingEntity);
         }
 
         public Keyboard(World world)
         {
-            entity = new(world);
-            ((Entity)entity).AddComponent(new IsKeyboard());
-            ((Entity)entity).AddComponent(new LastKeyboardState());
+            device = new(world);
+            Entity entity = device;
+            entity.AddComponent(new IsKeyboard());
+            entity.AddComponent(new LastKeyboardState());
         }
 
         public readonly void Dispose()
         {
-            entity.Dispose();
+            device.Dispose();
         }
 
         Query IEntity.GetQuery(World world)
@@ -41,29 +42,29 @@ namespace Windows
 
         public readonly KeyboardState GetState()
         {
-            ref IsKeyboard state = ref ((Entity)entity).GetComponentRef<IsKeyboard>();
+            ref IsKeyboard state = ref ((Entity)device).GetComponentRef<IsKeyboard>();
             return state.state;
         }
 
         public readonly KeyboardState GetLastState()
         {
-            ref LastKeyboardState lastState = ref ((Entity)entity).GetComponentRef<LastKeyboardState>();
+            ref LastKeyboardState lastState = ref ((Entity)device).GetComponentRef<LastKeyboardState>();
             return lastState.value;
         }
 
         public readonly void SetKeyDown(uint control, bool pressed, TimeSpan timestamp)
         {
-            ref IsKeyboard state = ref ((Entity)entity).GetComponentRef<IsKeyboard>();
+            ref IsKeyboard state = ref ((Entity)device).GetComponentRef<IsKeyboard>();
             state.state.SetKeyDown(control, pressed);
 
-            entity.SetUpdateTime(timestamp);
+            device.SetUpdateTime(timestamp);
         }
 
         unsafe readonly ButtonState IInputDevice.GetButtonState<C>(C control)
         {
             uint controlIndex = *(uint*)&control;
-            KeyboardState state = ((Entity)entity).GetComponent<IsKeyboard>().state;
-            KeyboardState lastState = ((Entity)entity).GetComponent<LastKeyboardState>().value;
+            KeyboardState state = ((Entity)device).GetComponent<IsKeyboard>().state;
+            KeyboardState lastState = ((Entity)device).GetComponent<LastKeyboardState>().value;
             return new ButtonState(state[controlIndex], lastState[controlIndex]);
         }
 

@@ -9,8 +9,8 @@ namespace Windows
     {
         private readonly Entity entity;
 
-        World IEntity.World => entity.world;
-        eint IEntity.Value => entity.value;
+        World IEntity.World => entity;
+        eint IEntity.Value => entity;
 
         public InputDevice(World world, eint existingEntity)
         {

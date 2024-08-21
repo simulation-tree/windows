@@ -28,8 +28,8 @@ namespace Windows
             }
         }
 
-        World IEntity.World => ((Entity)device).world;
-        eint IEntity.Value => ((Entity)device).value;
+        World IEntity.World => (Entity)device;
+        eint IEntity.Value => (Entity)device;
 
         public Mouse()
         {
@@ -44,8 +44,9 @@ namespace Windows
         public Mouse(World world)
         {
             device = new(world);
-            ((Entity)device ).AddComponent(new IsMouse());
-            ((Entity)device ).AddComponent(new LastMouseState());
+            Entity entity = device;
+            entity.AddComponent(new IsMouse());
+            entity.AddComponent(new LastMouseState());
         }
 
         public readonly void Dispose()
