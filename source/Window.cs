@@ -7,7 +7,7 @@ using Windows.Components;
 
 namespace Windows
 {
-    public readonly struct Window : IEntity, IDisposable
+    public readonly struct Window : IEntity
     {
         private readonly Destination destination;
 
@@ -130,11 +130,6 @@ namespace Windows
             entity.AddComponent(new WindowPosition(position));
             entity.AddComponent(new WindowSize(size));
             entity.AddComponent(closeCallback);
-        }
-
-        public readonly void Dispose()
-        {
-            destination.Dispose();
         }
 
         Query IEntity.GetQuery(World world)
