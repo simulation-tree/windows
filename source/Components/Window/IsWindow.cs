@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simulation;
+using System;
 using Unmanaged;
 
 namespace Windows.Components
@@ -6,6 +7,7 @@ namespace Windows.Components
     public struct IsWindow
     {
         public FixedString title;
+        public rint displayReference;
         public State state;
         public Flags flags;
 
@@ -59,10 +61,13 @@ namespace Windows.Components
 
         public readonly bool IsFocused => (flags & Flags.Focused) != 0;
 
+#if NET
+        [Obsolete("Default constructor not available", true)]
         public IsWindow()
         {
             throw new NotImplementedException();
         }
+#endif
 
         public IsWindow(ReadOnlySpan<char> title)
         {
