@@ -107,7 +107,7 @@ namespace Windows
         }
 
         World IEntity.World => (Entity)destination;
-        eint IEntity.Value => (Entity)destination;
+        uint IEntity.Value => (Entity)destination;
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -117,7 +117,7 @@ namespace Windows
         }
 #endif
 
-        public Window(World world, eint existingEntity)
+        public Window(World world, uint existingEntity)
         {
             destination = new(world, existingEntity);
         }
