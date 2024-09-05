@@ -69,7 +69,7 @@ namespace Windows.Components
         }
 #endif
 
-        public IsWindow(ReadOnlySpan<char> title)
+        public IsWindow(USpan<char> title)
         {
             this.title = new(title);
         }

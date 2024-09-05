@@ -9,20 +9,18 @@ namespace Windows
 {
     public readonly struct Window : IEntity
     {
-        private readonly Destination destination;
-
-        public readonly bool IsDestroyed => destination.IsDestroyed;
+        public readonly Destination destination;
 
         public readonly Vector2 Position
         {
             get
             {
-                ref WindowPosition windowPosition = ref ((Entity)destination).GetComponentRef<WindowPosition>();
+                ref WindowPosition windowPosition = ref destination.entity.GetComponentRef<WindowPosition>();
                 return windowPosition.value;
             }
             set
             {
-                ref WindowPosition windowPosition = ref ((Entity)destination).GetComponentRef<WindowPosition>();
+                ref WindowPosition windowPosition = ref destination.entity.GetComponentRef<WindowPosition>();
                 windowPosition = new(value);
             }
         }
@@ -31,12 +29,12 @@ namespace Windows
         {
             get
             {
-                ref WindowSize windowSize = ref ((Entity)destination).GetComponentRef<WindowSize>();
+                ref WindowSize windowSize = ref destination.entity.GetComponentRef<WindowSize>();
                 return windowSize.value;
             }
             set
             {
-                ref WindowSize windowSize = ref ((Entity)destination).GetComponentRef<WindowSize>();
+                ref WindowSize windowSize = ref destination.entity.GetComponentRef<WindowSize>();
                 windowSize = new(value);
             }
         }
@@ -45,12 +43,12 @@ namespace Windows
         {
             get
             {
-                ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
                 return component.IsResizable;
             }
             set
             {
-                ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
                 component.IsResizable = value;
             }
         }
@@ -59,12 +57,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = ((Entity)destination).GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
                 return component.IsBorderless;
             }
             set
             {
-                ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
                 component.IsBorderless = value;
             }
         }
@@ -73,7 +71,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = ((Entity)destination).GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
                 return component.state == IsWindow.State.Fullscreen;
             }
         }
@@ -82,12 +80,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = ((Entity)destination).GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
                 return component.IsMinimized;
             }
             set
             {
-                ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
                 component.IsMinimized = value;
             }
         }
@@ -96,12 +94,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = ((Entity)destination).GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
                 return component.state == IsWindow.State.Maximized;
             }
             set
             {
-                ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
                 component.state = value ? IsWindow.State.Maximized : IsWindow.State.Windowed;
             }
         }
@@ -110,11 +108,10 @@ namespace Windows
         {
             get
             {
-                Entity entity = destination;
-                World world = entity;
-                IsWindow component = entity.GetComponentRef<IsWindow>();
+                World world = destination.entity.world;
+                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
                 rint displayReference = component.displayReference;
-                uint displayEntity = entity.GetReference(displayReference);
+                uint displayEntity = destination.entity.GetReference(displayReference);
                 if (displayEntity == default)
                 {
                     return default;
@@ -127,8 +124,9 @@ namespace Windows
             }
         }
 
-        World IEntity.World => (Entity)destination;
-        uint IEntity.Value => (Entity)destination;
+        readonly World IEntity.World => destination.entity.world;
+        readonly uint IEntity.Value => destination.entity.value;
+        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsWindow>()], []);
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -143,47 +141,36 @@ namespace Windows
             destination = new(world, existingEntity);
         }
 
-        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
+        public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
             destination = new(world, size, renderer);
-            Entity entity = destination;
-            entity.AddComponent(new IsWindow(title));
-            entity.AddComponent(new WindowPosition(position));
-            entity.AddComponent(new WindowSize(size));
-            entity.AddComponent(closeCallback);
+            destination.entity.AddComponent(new IsWindow(title));
+            destination.entity.AddComponent(new WindowPosition(position));
+            destination.entity.AddComponent(new WindowSize(size));
+            destination.entity.AddComponent(closeCallback);
         }
 
-        Query IEntity.GetQuery(World world)
+        public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)
+            : this(world, new FixedString(title), position, size, new FixedString(renderer), closeCallback)
         {
-            return new Query(world, RuntimeType.Get<IsWindow>());
         }
 
         public readonly void BecomeMaximized()
         {
-            ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Maximized;
         }
 
         public readonly void BecomeFullscreen()
         {
-            ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Fullscreen;
         }
 
         public readonly void BecomeWindowed()
         {
-            ref IsWindow component = ref ((Entity)destination).GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Windowed;
-        }
-
-        public static implicit operator Destination(Window window)
-        {
-            return window.destination;
-        }
-
-        public static implicit operator Entity(Window window)
-        {
-            return window.destination;
         }
     }
 }
