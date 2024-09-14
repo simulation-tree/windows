@@ -172,5 +172,15 @@ namespace Windows
             ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Windowed;
         }
+
+        public static implicit operator Destination(Window window)
+        {
+            return window.destination;
+        }
+
+        public static implicit operator Entity(Window window)
+        {
+            return window.AsEntity();
+        }
     }
 }
