@@ -67,6 +67,20 @@ namespace Windows
             }
         }
 
+        public readonly bool AlwaysOnTop
+        {
+            get
+            {
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                return component.AlwaysOnTop;
+            }
+            set
+            {
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                component.AlwaysOnTop = value;
+            }
+        }
+
         public readonly bool IsFullscreen
         {
             get

@@ -59,6 +59,22 @@ namespace Windows.Components
             }
         }
 
+        public bool AlwaysOnTop
+        {
+            readonly get => (flags & Flags.AlwaysOnTop) != 0;
+            set
+            {
+                if (value)
+                {
+                    flags |= Flags.AlwaysOnTop;
+                }
+                else
+                {
+                    flags &= ~Flags.AlwaysOnTop;
+                }
+            }
+        }
+
         public readonly bool IsFocused => (flags & Flags.Focused) != 0;
 
 #if NET
@@ -93,7 +109,8 @@ namespace Windows.Components
             Borderless = 1,
             Resizable = 2,
             Focused = 4,
-            Minimized = 8
+            Minimized = 8,
+            AlwaysOnTop = 16
         }
     }
 }
