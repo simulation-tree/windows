@@ -75,6 +75,22 @@ namespace Windows.Components
             }
         }
 
+        public bool IsTransparent
+        {
+            readonly get => (flags & Flags.Transparent) != 0;
+            set
+            {
+                if (value)
+                {
+                    flags |= Flags.Transparent;
+                }
+                else
+                {
+                    flags &= ~Flags.Transparent;
+                }
+            }
+        }
+
         public readonly bool IsFocused => (flags & Flags.Focused) != 0;
 
 #if NET
@@ -110,7 +126,8 @@ namespace Windows.Components
             Resizable = 2,
             Focused = 4,
             Minimized = 8,
-            AlwaysOnTop = 16
+            AlwaysOnTop = 16,
+            Transparent = 32
         }
     }
 }

@@ -53,6 +53,20 @@ namespace Windows
             }
         }
 
+        public readonly bool IsTransparent
+        {
+            get
+            {
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                return component.IsTransparent;
+            }
+            set
+            {
+                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                component.IsTransparent = value;
+            }
+        }
+
         public readonly bool IsBorderless
         {
             get
