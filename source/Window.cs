@@ -1,4 +1,5 @@
-﻿using Rendering;
+﻿using Data;
+using Rendering;
 using Simulation;
 using System;
 using System.Numerics;
@@ -152,6 +153,8 @@ namespace Windows
             }
         }
 
+        public readonly ref Color ClearColor => ref destination.ClearColor;
+
         readonly World IEntity.World => destination.entity.world;
         readonly uint IEntity.Value => destination.entity.value;
         readonly Definition IEntity.Definition => new([RuntimeType.Get<IsWindow>()], []);
@@ -172,10 +175,10 @@ namespace Windows
         public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
             destination = new(world, size, renderer);
-            destination.entity.AddComponent(new IsWindow(title));
-            destination.entity.AddComponent(new WindowPosition(position));
-            destination.entity.AddComponent(new WindowSize(size));
-            destination.entity.AddComponent(closeCallback);
+            destination.AddComponent(new IsWindow(title));
+            destination.AddComponent(new WindowPosition(position));
+            destination.AddComponent(new WindowSize(size));
+            destination.AddComponent(closeCallback);
         }
 
         public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)
