@@ -1,31 +1,44 @@
-﻿using Simulation;
-using System;
-using System.Diagnostics;
+﻿using System;
 
 namespace Windows.Components
 {
-    public unsafe struct WindowCloseCallback
+    public unsafe struct WindowCloseCallback : IEquatable<WindowCloseCallback>
     {
-        private delegate* unmanaged<World, uint, void> value;
+        private delegate* unmanaged<Window, void> value;
 
-        public WindowCloseCallback(delegate* unmanaged<World, uint, void> value)
+        public WindowCloseCallback(delegate* unmanaged<Window, void> value)
         {
             this.value = value;
         }
 
-        [Conditional("DEBUG")]
-        private readonly void ThrowIfDisposed()
+        public readonly override bool Equals(object? obj)
         {
-            if (value is null)
-            {
-                throw new ObjectDisposedException(nameof(WindowCloseCallback));
-            }
+            return obj is WindowCloseCallback callback && Equals(callback);
         }
 
-        public readonly void Invoke(World world, uint entity)
+        public readonly bool Equals(WindowCloseCallback other)
         {
-            ThrowIfDisposed();
-            value(world, entity);
+            return (nint)value == (nint)other.value;
+        }
+
+        public readonly override int GetHashCode()
+        {
+            return ((nint)value).GetHashCode();
+        }
+
+        public readonly void Invoke(Window window)
+        {
+            value(window);
+        }
+
+        public static bool operator ==(WindowCloseCallback left, WindowCloseCallback right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(WindowCloseCallback left, WindowCloseCallback right)
+        {
+            return !(left == right);
         }
     }
 }

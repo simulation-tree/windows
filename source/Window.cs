@@ -8,7 +8,7 @@ using Windows.Components;
 
 namespace Windows
 {
-    public readonly struct Window : IEntity
+    public readonly struct Window : IEntity, IEquatable<Window>
     {
         public readonly Destination destination;
 
@@ -16,7 +16,7 @@ namespace Windows
         {
             get
             {
-                ref WindowPosition windowPosition = ref destination.entity.GetComponentRef<WindowPosition>();
+                WindowPosition windowPosition = destination.entity.GetComponent<WindowPosition>();
                 return windowPosition.value;
             }
             set
@@ -30,7 +30,7 @@ namespace Windows
         {
             get
             {
-                ref WindowSize windowSize = ref destination.entity.GetComponentRef<WindowSize>();
+                WindowSize windowSize = destination.entity.GetComponent<WindowSize>();
                 return windowSize.value;
             }
             set
@@ -44,7 +44,7 @@ namespace Windows
         {
             get
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.IsResizable;
             }
             set
@@ -58,7 +58,7 @@ namespace Windows
         {
             get
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.IsTransparent;
             }
             set
@@ -72,7 +72,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.IsBorderless;
             }
             set
@@ -86,7 +86,7 @@ namespace Windows
         {
             get
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.AlwaysOnTop;
             }
             set
@@ -100,7 +100,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.state == IsWindow.State.Fullscreen;
             }
         }
@@ -109,7 +109,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.IsMinimized;
             }
             set
@@ -123,7 +123,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 return component.state == IsWindow.State.Maximized;
             }
             set
@@ -138,7 +138,7 @@ namespace Windows
             get
             {
                 World world = destination.entity.world;
-                IsWindow component = destination.entity.GetComponentRef<IsWindow>();
+                IsWindow component = destination.entity.GetComponent<IsWindow>();
                 rint displayReference = component.displayReference;
                 uint displayEntity = destination.entity.GetReference(displayReference);
                 if (displayEntity == default)
@@ -152,6 +152,8 @@ namespace Windows
                 }
             }
         }
+
+        public readonly IsWindow.State State => destination.entity.GetComponent<IsWindow>().state;
 
         public readonly ref Color ClearColor => ref destination.ClearColor;
 
@@ -186,6 +188,16 @@ namespace Windows
         {
         }
 
+        public readonly void Dispose()
+        {
+            destination.Dispose();
+        }
+
+        public readonly override string ToString()
+        {
+            return destination.ToString();
+        }
+
         public readonly void BecomeMaximized()
         {
             ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
@@ -204,6 +216,21 @@ namespace Windows
             component.state = IsWindow.State.Windowed;
         }
 
+        public readonly override bool Equals(object? obj)
+        {
+            return obj is Window window && Equals(window);
+        }
+
+        public readonly bool Equals(Window other)
+        {
+            return destination.Equals(other.destination);
+        }
+
+        public readonly override int GetHashCode()
+        {
+            return destination.GetHashCode();
+        }
+
         public static implicit operator Destination(Window window)
         {
             return window.destination;
@@ -212,6 +239,16 @@ namespace Windows
         public static implicit operator Entity(Window window)
         {
             return window.AsEntity();
+        }
+
+        public static bool operator ==(Window left, Window right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Window left, Window right)
+        {
+            return !(left == right);
         }
     }
 }
