@@ -154,8 +154,7 @@ namespace Windows
         }
 
         public readonly IsWindow.State State => destination.entity.GetComponent<IsWindow>().state;
-
-        public readonly ref Color ClearColor => ref destination.ClearColor;
+        public readonly ref Vector4 ClearColor => ref destination.ClearColor;
 
         readonly World IEntity.World => destination.entity.world;
         readonly uint IEntity.Value => destination.entity.value;
