@@ -2,9 +2,9 @@
 
 namespace Windows.Components
 {
-    public unsafe struct WindowCloseCallback : IEquatable<WindowCloseCallback>
+    public readonly unsafe struct WindowCloseCallback : IEquatable<WindowCloseCallback>
     {
-        private delegate* unmanaged<Window, void> value;
+        private readonly delegate* unmanaged<Window, void> value;
 
         public WindowCloseCallback(delegate* unmanaged<Window, void> value)
         {

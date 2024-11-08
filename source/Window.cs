@@ -1,5 +1,4 @@
-﻿using Data;
-using Rendering;
+﻿using Rendering;
 using Simulation;
 using System;
 using System.Numerics;
