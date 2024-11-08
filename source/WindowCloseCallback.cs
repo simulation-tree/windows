@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Windows.Components
+namespace Windows
 {
     public readonly unsafe struct WindowCloseCallback : IEquatable<WindowCloseCallback>
     {
