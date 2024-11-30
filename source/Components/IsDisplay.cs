@@ -1,5 +1,8 @@
-﻿namespace Windows.Components
+﻿using Worlds;
+
+namespace Windows.Components
 {
+    [Component]
     public readonly struct IsDisplay
     {
         public readonly uint width;

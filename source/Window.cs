@@ -1,41 +1,31 @@
 ﻿using Rendering;
-using Simulation;
 using System;
 using System.Numerics;
 using Unmanaged;
 using Windows.Components;
+using Worlds;
 
 namespace Windows
 {
     public readonly struct Window : IEntity, IEquatable<Window>
     {
-        public readonly Destination destination;
+        private readonly Destination destination;
 
-        public readonly Vector2 Position
+        public ref Vector2 Position
         {
             get
             {
-                WindowPosition windowPosition = destination.entity.GetComponent<WindowPosition>();
-                return windowPosition.value;
-            }
-            set
-            {
-                ref WindowPosition windowPosition = ref destination.entity.GetComponentRef<WindowPosition>();
-                windowPosition = new(value);
+                ref WindowTransform transform = ref destination.AsEntity().GetComponentRef<WindowTransform>();
+                return ref transform.position;
             }
         }
 
-        public readonly Vector2 Size
+        public ref Vector2 Size
         {
             get
             {
-                WindowSize windowSize = destination.entity.GetComponent<WindowSize>();
-                return windowSize.value;
-            }
-            set
-            {
-                ref WindowSize windowSize = ref destination.entity.GetComponentRef<WindowSize>();
-                windowSize = new(value);
+                ref WindowTransform transform = ref destination.AsEntity().GetComponentRef<WindowTransform>();
+                return ref transform.size;
             }
         }
 
@@ -43,12 +33,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.IsResizable;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.IsResizable = value;
             }
         }
@@ -57,12 +47,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.IsTransparent;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.IsTransparent = value;
             }
         }
@@ -71,12 +61,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.IsBorderless;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.IsBorderless = value;
             }
         }
@@ -85,12 +75,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.AlwaysOnTop;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.AlwaysOnTop = value;
             }
         }
@@ -99,7 +89,7 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.state == IsWindow.State.Fullscreen;
             }
         }
@@ -108,12 +98,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.IsMinimized;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.IsMinimized = value;
             }
         }
@@ -122,12 +112,12 @@ namespace Windows
         {
             get
             {
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 return component.state == IsWindow.State.Maximized;
             }
             set
             {
-                ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+                ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
                 component.state = value ? IsWindow.State.Maximized : IsWindow.State.Windowed;
             }
         }
@@ -136,10 +126,10 @@ namespace Windows
         {
             get
             {
-                World world = destination.entity.world;
-                IsWindow component = destination.entity.GetComponent<IsWindow>();
+                World world = destination.GetWorld();
+                IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 rint displayReference = component.displayReference;
-                uint displayEntity = destination.entity.GetReference(displayReference);
+                uint displayEntity = destination.AsEntity().GetReference(displayReference);
                 if (displayEntity == default)
                 {
                     return default;
@@ -152,12 +142,12 @@ namespace Windows
             }
         }
 
-        public readonly IsWindow.State State => destination.entity.GetComponent<IsWindow>().state;
+        public readonly IsWindow.State State => destination.AsEntity().GetComponent<IsWindow>().state;
         public readonly ref Vector4 ClearColor => ref destination.ClearColor;
 
-        readonly World IEntity.World => destination.entity.world;
-        readonly uint IEntity.Value => destination.entity.value;
-        readonly Definition IEntity.Definition => new([RuntimeType.Get<IsWindow>()], []);
+        readonly World IEntity.World => destination.GetWorld();
+        readonly uint IEntity.Value => destination.GetEntityValue();
+        readonly Definition IEntity.Definition => new Definition().AddComponentType<IsWindow>();
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -176,8 +166,7 @@ namespace Windows
         {
             destination = new(world, size, renderer);
             destination.AddComponent(new IsWindow(title));
-            destination.AddComponent(new WindowPosition(position));
-            destination.AddComponent(new WindowSize(size));
+            destination.AddComponent(new WindowTransform(position, size));
             destination.AddComponent(closeCallback);
         }
 
@@ -198,19 +187,19 @@ namespace Windows
 
         public readonly void BecomeMaximized()
         {
-            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Maximized;
         }
 
         public readonly void BecomeFullscreen()
         {
-            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Fullscreen;
         }
 
         public readonly void BecomeWindowed()
         {
-            ref IsWindow component = ref destination.entity.GetComponentRef<IsWindow>();
+            ref IsWindow component = ref destination.AsEntity().GetComponentRef<IsWindow>();
             component.state = IsWindow.State.Windowed;
         }
 

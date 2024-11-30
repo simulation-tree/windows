@@ -1,9 +1,10 @@
-﻿using Simulation;
-using System;
+﻿using System;
 using Unmanaged;
+using Worlds;
 
 namespace Windows.Components
 {
+    [Component]
     public struct IsWindow
     {
         public FixedString title;
