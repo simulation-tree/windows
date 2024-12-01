@@ -29,6 +29,14 @@ namespace Windows
             }
         }
 
+        public readonly WindowCloseCallback CloseCallback
+        {
+            get
+            {
+                return destination.AsEntity().GetComponent<IsWindow>().closeCallback;
+            }
+        }
+
         public readonly bool IsResizable
         {
             get
@@ -165,9 +173,8 @@ namespace Windows
         public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
             destination = new(world, size, renderer);
-            destination.AddComponent(new IsWindow(title));
+            destination.AddComponent(new IsWindow(title, closeCallback));
             destination.AddComponent(new WindowTransform(position, size));
-            destination.AddComponent(closeCallback);
         }
 
         public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)

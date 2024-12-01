@@ -11,6 +11,7 @@ namespace Windows.Components
         public rint displayReference;
         public State state;
         public Flags flags;
+        public WindowCloseCallback closeCallback;
 
         public bool IsBorderless
         {
@@ -102,14 +103,16 @@ namespace Windows.Components
         }
 #endif
 
-        public IsWindow(USpan<char> title)
+        public IsWindow(USpan<char> title, WindowCloseCallback closeCallback)
         {
             this.title = new(title);
+            this.closeCallback = closeCallback;
         }
 
-        public IsWindow(FixedString title)
+        public IsWindow(FixedString title, WindowCloseCallback closeCallback)
         {
             this.title = title;
+            this.closeCallback = closeCallback;
         }
 
         public enum State
