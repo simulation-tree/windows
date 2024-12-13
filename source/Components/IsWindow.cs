@@ -12,6 +12,7 @@ namespace Windows.Components
         public State state;
         public Flags flags;
         public WindowCloseCallback closeCallback;
+        public uint id;
 
         public bool IsBorderless
         {
