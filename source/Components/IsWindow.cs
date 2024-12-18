@@ -1,5 +1,6 @@
 ﻿using System;
 using Unmanaged;
+using Windows.Functions;
 using Worlds;
 
 namespace Windows.Components
@@ -116,7 +117,7 @@ namespace Windows.Components
             this.closeCallback = closeCallback;
         }
 
-        public enum State
+        public enum State : byte
         {
             Windowed,
             Maximized,
@@ -124,7 +125,7 @@ namespace Windows.Components
         }
 
         [Flags]
-        public enum Flags
+        public enum Flags : byte
         {
             None = 0,
             Borderless = 1,

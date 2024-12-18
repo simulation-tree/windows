@@ -4,6 +4,7 @@ using System;
 using System.Numerics;
 using Unmanaged;
 using Windows.Components;
+using Windows.Functions;
 using Worlds;
 
 namespace Windows
@@ -138,7 +139,7 @@ namespace Windows
                 World world = destination.GetWorld();
                 IsWindow component = destination.AsEntity().GetComponent<IsWindow>();
                 rint displayReference = component.displayReference;
-                uint displayEntity = destination.AsEntity().GetReference(displayReference);
+                uint displayEntity = destination.GetReference(displayReference);
                 if (displayEntity == default)
                 {
                     return default;
@@ -172,9 +173,9 @@ namespace Windows
 
         public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
-            destination = new(world, size, renderer);
-            destination.AddComponent(new IsWindow(title, closeCallback));
-            destination.AddComponent(new WindowTransform(position, size));
+            Entity destination = new Entity<IsDestination, IsWindow, WindowTransform>(world, new IsDestination(size, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size)).AsEntity();
+            destination.CreateArray<DestinationExtension>();
+            this.destination = destination.As<Destination>();
         }
 
         public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)
