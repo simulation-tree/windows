@@ -156,7 +156,11 @@ namespace Windows
 
         readonly World IEntity.World => destination.GetWorld();
         readonly uint IEntity.Value => destination.GetEntityValue();
-        readonly Definition IEntity.Definition => new Definition().AddComponentType<IsWindow>();
+
+        readonly Definition IEntity.GetDefinition(Schema schema)
+        {
+            return new Definition().AddComponentType<IsWindow>(schema);
+        }
 
 #if NET
         [Obsolete("Default constructor not available", true)]
