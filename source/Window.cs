@@ -157,9 +157,9 @@ namespace Windows
         readonly World IEntity.World => destination.GetWorld();
         readonly uint IEntity.Value => destination.GetEntityValue();
 
-        readonly Definition IEntity.GetDefinition(Schema schema)
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            return new Definition().AddComponentType<IsWindow>(schema);
+            archetype.AddComponentType<IsWindow>();
         }
 
 #if NET
