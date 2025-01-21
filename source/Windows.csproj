@@ -17,7 +17,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
-	  <ProjectReference Include="..\..\simulation\source\Simulation.csproj" />
+	  <ProjectReference Include="..\..\simulation\core\Simulation.Core.csproj" />
 	</ItemGroup>
 
 </Project>
