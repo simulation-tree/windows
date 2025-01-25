@@ -6,11 +6,19 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<IsAotCompatible>True</IsAotCompatible>
+		<PublishAot>true</PublishAot>
+		<StripSymbols>true</StripSymbols>
+		<IsPackable>false</IsPackable>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<IsTrimmable>True</IsTrimmable>
+		<Title>Windows</Title>
+		<Authors>popcron</Authors>
+		<Company>game-simulations</Company>
+		<RepositoryUrl>https://github.com/game-simulations/windows</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
-		<ProjectReference Include="..\..\simulation\core\Simulation.Core.csproj" />
 		<ProjectReference Include="..\..\types\generator\Types.Generator.csproj">
 			<OutputItemType>Analyzer</OutputItemType>
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
