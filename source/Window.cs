@@ -13,7 +13,7 @@ namespace Windows
     {
         private readonly Destination destination;
 
-        public ref Vector2 Position
+        public readonly ref Vector2 Position
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Windows
             }
         }
 
-        public ref Vector2 Size
+        public readonly ref Vector2 Size
         {
             get
             {
@@ -152,6 +152,15 @@ namespace Windows
             }
         }
 
+        public readonly ref FixedString Title
+        {
+            get
+            {
+                ref IsWindow component = ref destination.AsEntity().GetComponent<IsWindow>();
+                return ref component.title;
+            }
+        }
+
         public readonly IsWindow.State State => destination.AsEntity().GetComponent<IsWindow>().state;
 
         readonly World IEntity.World => destination.GetWorld();
@@ -169,11 +178,6 @@ namespace Windows
             throw new InvalidOperationException("Cannot create a window without a world.");
         }
 #endif
-
-        public Window(World world, uint existingEntity)
-        {
-            destination = new(world, existingEntity);
-        }
 
         public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
         {
