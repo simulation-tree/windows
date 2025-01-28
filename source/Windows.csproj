@@ -8,7 +8,6 @@
 		<IsAotCompatible>True</IsAotCompatible>
 		<PublishAot>true</PublishAot>
 		<StripSymbols>true</StripSymbols>
-		<IsPackable>false</IsPackable>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<IsTrimmable>True</IsTrimmable>
 		<Title>Windows</Title>
