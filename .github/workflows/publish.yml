@@ -50,12 +50,12 @@ jobs:
           token: ${{ secrets.PAT }}
           path: rendering
 
-      - name: Pull `simulation` dependency
+      - name: Pull `materials` dependency
         uses: actions/checkout@v4.1.2
         with:
-          repository: game-simulations/simulation
+          repository: game-simulations/materials
           token: ${{ secrets.PAT }}
-          path: simulation
+          path: materials
 
       - name: Pull `shaders` dependency
         uses: actions/checkout@v4.1.2
@@ -77,20 +77,6 @@ jobs:
           repository: game-simulations/meshes
           token: ${{ secrets.PAT }}
           path: meshes
-
-      - name: Pull `serialization` dependency
-        uses: actions/checkout@v4.1.2
-        with:
-          repository: game-simulations/serialization
-          token: ${{ secrets.PAT }}
-          path: serialization
-
-      - name: Pull `data` dependency
-        uses: actions/checkout@v4.1.2
-        with:
-          repository: game-simulations/data
-          token: ${{ secrets.PAT }}
-          path: data
       
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
