@@ -7,9 +7,9 @@ namespace Windows.Components
     {
         public readonly uint width;
         public readonly uint height;
-        public readonly uint refreshRate;
+        public readonly float refreshRate;
 
-        public IsDisplay(uint width, uint height, uint refreshRate)
+        public IsDisplay(uint width, uint height, float refreshRate)
         {
             this.width = width;
             this.height = height;
