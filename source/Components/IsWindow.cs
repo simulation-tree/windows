@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Unmanaged;
 using Windows.Functions;
 using Worlds;
@@ -10,92 +11,94 @@ namespace Windows.Components
     {
         public FixedString title;
         public rint displayReference;
-        public State state;
-        public Flags flags;
+        public WindowState windowState;
+        public WindowFlags windowFlags;
         public WindowCloseCallback closeCallback;
+        public CursorState cursorState;
+        public Vector4 cursorArea;
         public uint id;
 
         public bool IsBorderless
         {
-            readonly get => (flags & Flags.Borderless) != 0;
+            readonly get => (windowFlags & WindowFlags.Borderless) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.Borderless;
+                    windowFlags |= WindowFlags.Borderless;
                 }
                 else
                 {
-                    flags &= ~Flags.Borderless;
+                    windowFlags &= ~WindowFlags.Borderless;
                 }
             }
         }
 
         public bool IsResizable
         {
-            readonly get => (flags & Flags.Resizable) != 0;
+            readonly get => (windowFlags & WindowFlags.Resizable) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.Resizable;
+                    windowFlags |= WindowFlags.Resizable;
                 }
                 else
                 {
-                    flags &= ~Flags.Resizable;
+                    windowFlags &= ~WindowFlags.Resizable;
                 }
             }
         }
 
         public bool IsMinimized
         {
-            readonly get => (flags & Flags.Minimized) != 0;
+            readonly get => (windowFlags & WindowFlags.Minimized) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.Minimized;
+                    windowFlags |= WindowFlags.Minimized;
                 }
                 else
                 {
-                    flags &= ~Flags.Minimized;
+                    windowFlags &= ~WindowFlags.Minimized;
                 }
             }
         }
 
         public bool AlwaysOnTop
         {
-            readonly get => (flags & Flags.AlwaysOnTop) != 0;
+            readonly get => (windowFlags & WindowFlags.AlwaysOnTop) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.AlwaysOnTop;
+                    windowFlags |= WindowFlags.AlwaysOnTop;
                 }
                 else
                 {
-                    flags &= ~Flags.AlwaysOnTop;
+                    windowFlags &= ~WindowFlags.AlwaysOnTop;
                 }
             }
         }
 
         public bool IsTransparent
         {
-            readonly get => (flags & Flags.Transparent) != 0;
+            readonly get => (windowFlags & WindowFlags.Transparent) != 0;
             set
             {
                 if (value)
                 {
-                    flags |= Flags.Transparent;
+                    windowFlags |= WindowFlags.Transparent;
                 }
                 else
                 {
-                    flags &= ~Flags.Transparent;
+                    windowFlags &= ~WindowFlags.Transparent;
                 }
             }
         }
 
-        public readonly bool IsFocused => (flags & Flags.Focused) != 0;
+        public readonly bool IsFocused => (windowFlags & WindowFlags.Focused) != 0;
 
 #if NET
         [Obsolete("Default constructor not available", true)]
@@ -115,25 +118,6 @@ namespace Windows.Components
         {
             this.title = title;
             this.closeCallback = closeCallback;
-        }
-
-        public enum State : byte
-        {
-            Windowed,
-            Maximized,
-            Fullscreen
-        }
-
-        [Flags]
-        public enum Flags : byte
-        {
-            None = 0,
-            Borderless = 1,
-            Resizable = 2,
-            Focused = 4,
-            Minimized = 8,
-            AlwaysOnTop = 16,
-            Transparent = 32
         }
     }
 }

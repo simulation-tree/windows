@@ -14,7 +14,7 @@ namespace Windows
         public readonly ref Vector2 Size => ref GetComponent<WindowTransform>().size;
         public readonly WindowCloseCallback CloseCallback => GetComponent<IsWindow>().closeCallback;
         public readonly ref FixedString Title => ref GetComponent<IsWindow>().title;
-        public readonly IsWindow.State State => GetComponent<IsWindow>().state;
+        public readonly WindowState State => GetComponent<IsWindow>().windowState;
         public readonly ref Vector4 Region => ref As<Destination>().Region;
         public readonly ref Vector4 ClearColor => ref As<Destination>().ClearColor;
         public readonly ref FixedString RendererLabel => ref As<Destination>().RendererLabel;
@@ -80,7 +80,7 @@ namespace Windows
             get
             {
                 IsWindow component = GetComponent<IsWindow>();
-                return component.state == IsWindow.State.Fullscreen;
+                return component.windowState == WindowState.Fullscreen;
             }
         }
 
@@ -103,12 +103,41 @@ namespace Windows
             get
             {
                 IsWindow component = GetComponent<IsWindow>();
-                return component.state == IsWindow.State.Maximized;
+                return component.windowState == WindowState.Maximized;
             }
             set
             {
                 ref IsWindow component = ref GetComponent<IsWindow>();
-                component.state = value ? IsWindow.State.Maximized : IsWindow.State.Windowed;
+                component.windowState = value ? WindowState.Maximized : WindowState.Windowed;
+            }
+        }
+
+        public readonly ref CursorState CursorState
+        {
+            get
+            {
+                ref IsWindow component = ref GetComponent<IsWindow>();
+                return ref component.cursorState;
+            }
+        }
+
+        /// <summary>
+        /// The area where the cursor is allowed to move.
+        /// <para>
+        /// If set to <see cref="Vector4.Zero"/>, the cursor will be allowed to move anywhere.
+        /// </para>
+        /// </summary>
+        public readonly Vector4 CursorArea
+        {
+            get
+            {
+                IsWindow component = GetComponent<IsWindow>();
+                return component.cursorArea;
+            }
+            set
+            {
+                ref IsWindow component = ref GetComponent<IsWindow>();
+                component.cursorArea = value;
             }
         }
 
@@ -153,19 +182,19 @@ namespace Windows
         public readonly void BecomeMaximized()
         {
             ref IsWindow component = ref GetComponent<IsWindow>();
-            component.state = IsWindow.State.Maximized;
+            component.windowState = WindowState.Maximized;
         }
 
         public readonly void BecomeFullscreen()
         {
             ref IsWindow component = ref GetComponent<IsWindow>();
-            component.state = IsWindow.State.Fullscreen;
+            component.windowState = WindowState.Fullscreen;
         }
 
         public readonly void BecomeWindowed()
         {
             ref IsWindow component = ref GetComponent<IsWindow>();
-            component.state = IsWindow.State.Windowed;
+            component.windowState = WindowState.Windowed;
         }
 
         public readonly bool TryGetSurfaceInUse(out Allocation surface)
