@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Numerics;
-using Worlds;
 
 namespace Windows.Components
 {
-    [Component]
     public struct WindowTransform : IEquatable<WindowTransform>
     {
         public Vector2 position;
