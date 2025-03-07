@@ -13,11 +13,11 @@ namespace Windows
         public readonly ref Vector2 Position => ref GetComponent<WindowTransform>().position;
         public readonly ref Vector2 Size => ref GetComponent<WindowTransform>().size;
         public readonly WindowCloseCallback CloseCallback => GetComponent<IsWindow>().closeCallback;
-        public readonly ref FixedString Title => ref GetComponent<IsWindow>().title;
+        public readonly ref ASCIIText256 Title => ref GetComponent<IsWindow>().title;
         public readonly WindowState State => GetComponent<IsWindow>().windowState;
         public readonly ref Vector4 Region => ref As<Destination>().Region;
         public readonly ref Vector4 ClearColor => ref As<Destination>().ClearColor;
-        public readonly ref FixedString RendererLabel => ref As<Destination>().RendererLabel;
+        public readonly ref ASCIIText256 RendererLabel => ref As<Destination>().RendererLabel;
 
         public readonly bool IsResizable
         {
@@ -157,7 +157,7 @@ namespace Windows
             }
         }
 
-        public Window(World world, FixedString title, Vector2 position, Vector2 size, FixedString renderer, WindowCloseCallback closeCallback)
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, ASCIIText256 renderer, WindowCloseCallback closeCallback)
         {
             this.world = world;
             value = world.CreateEntity(new IsDestination(size, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size));
@@ -165,7 +165,7 @@ namespace Windows
         }
 
         public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)
-            : this(world, new FixedString(title), position, size, new FixedString(renderer), closeCallback)
+            : this(world, new ASCIIText256(title), position, size, new ASCIIText256(renderer), closeCallback)
         {
         }
 
@@ -197,12 +197,12 @@ namespace Windows
             component.windowState = WindowState.Windowed;
         }
 
-        public readonly bool TryGetSurfaceInUse(out Allocation surface)
+        public readonly bool TryGetSurfaceInUse(out MemoryAddress surface)
         {
             return As<Destination>().TryGetSurfaceInUse(out surface);
         }
 
-        public readonly bool TryGetRendererInstanceInUse(out Allocation renderer)
+        public readonly bool TryGetRendererInstanceInUse(out MemoryAddress renderer)
         {
             return As<Destination>().TryGetRendererInstanceInUse(out renderer);
         }

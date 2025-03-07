@@ -8,7 +8,7 @@ namespace Windows.Components
 {
     public struct IsWindow
     {
-        public FixedString title;
+        public ASCIIText256 title;
         public rint displayReference;
         public WindowState windowState;
         public WindowFlags windowFlags;
@@ -113,7 +113,7 @@ namespace Windows.Components
             this.closeCallback = closeCallback;
         }
 
-        public IsWindow(FixedString title, WindowCloseCallback closeCallback)
+        public IsWindow(ASCIIText256 title, WindowCloseCallback closeCallback)
         {
             this.title = title;
             this.closeCallback = closeCallback;
