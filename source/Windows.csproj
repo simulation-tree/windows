@@ -12,8 +12,8 @@
         <IsTrimmable>True</IsTrimmable>
         <Title>Windows</Title>
         <Authors>popcron</Authors>
-        <Company>game-simulations</Company>
-        <RepositoryUrl>https://github.com/game-simulations/windows</RepositoryUrl>
+        <Company>simulation-tree</Company>
+        <RepositoryUrl>https://github.com/simulation-tree/windows</RepositoryUrl>
         <PackageId/>
     </PropertyGroup>
 
