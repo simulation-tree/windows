@@ -1,5 +1,6 @@
 ﻿using Rendering;
 using Rendering.Components;
+using System;
 using System.Numerics;
 using Unmanaged;
 using Windows.Components;
@@ -164,7 +165,7 @@ namespace Windows
             CreateArray<DestinationExtension>();
         }
 
-        public Window(World world, USpan<char> title, Vector2 position, Vector2 size, USpan<char> renderer, WindowCloseCallback closeCallback)
+        public Window(World world, Span<char> title, Vector2 position, Vector2 size, Span<char> renderer, WindowCloseCallback closeCallback)
             : this(world, new ASCIIText256(title), position, size, new ASCIIText256(renderer), closeCallback)
         {
         }
