@@ -107,7 +107,7 @@ namespace Windows.Components
         }
 #endif
 
-        public IsWindow(System.Span<char> title, WindowCloseCallback closeCallback)
+        public IsWindow(ReadOnlySpan<char> title, WindowCloseCallback closeCallback)
         {
             this.title = new(title);
             this.closeCallback = closeCallback;
