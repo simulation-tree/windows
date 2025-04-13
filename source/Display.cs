@@ -1,4 +1,5 @@
-﻿using Windows.Components;
+﻿using System.Numerics;
+using Windows.Components;
 using Worlds;
 
 namespace Windows
@@ -15,6 +16,15 @@ namespace Windows
             {
                 IsDisplay component = GetComponent<IsDisplay>();
                 return (component.width, component.height);
+            }
+        }
+
+        public readonly Vector2 SizeAsVector2
+        {
+            get
+            {
+                IsDisplay component = GetComponent<IsDisplay>();
+                return new Vector2(component.width, component.height);
             }
         }
 

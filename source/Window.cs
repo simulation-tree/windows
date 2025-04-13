@@ -165,8 +165,20 @@ namespace Windows
             CreateArray<DestinationExtension>();
         }
 
-        public Window(World world, Span<char> title, Vector2 position, Vector2 size, Span<char> renderer, WindowCloseCallback closeCallback)
+        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, Span<char> renderer, WindowCloseCallback closeCallback)
             : this(world, new ASCIIText256(title), position, size, new ASCIIText256(renderer), closeCallback)
+        {
+        }
+
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, Vector2 anchor, ASCIIText256 renderer, WindowCloseCallback closeCallback)
+        {
+            this.world = world;
+            value = world.CreateEntity(new IsDestination(default, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size, anchor));
+            CreateArray<DestinationExtension>();
+        }
+
+        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, Vector2 anchor, Span<char> renderer, WindowCloseCallback closeCallback)
+            : this(world, new ASCIIText256(title), position, size, anchor, new ASCIIText256(renderer), closeCallback)
         {
         }
 

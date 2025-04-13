@@ -7,11 +7,18 @@ namespace Windows.Components
     {
         public Vector2 position;
         public Vector2 size;
+        public Vector2 anchor;
 
-        public WindowTransform(Vector2 position, Vector2 size)
+        public WindowTransform(Vector2 position, Vector2 size, Vector2 anchor = default)
         {
             this.position = position;
             this.size = size;
+            this.anchor = anchor;
+        }
+
+        public readonly override string ToString()
+        {
+            return $"Position: {position}, Size: {size}";
         }
 
         public readonly override bool Equals(object? obj)
