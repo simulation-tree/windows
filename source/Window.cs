@@ -158,7 +158,7 @@ namespace Windows
             }
         }
 
-        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, ASCIIText256 renderer, WindowCloseCallback closeCallback)
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, ASCIIText256 renderer, WindowCloseCallback closeCallback = default)
         {
             this.world = world;
             value = world.CreateEntity(new IsDestination(size, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size));
@@ -170,7 +170,7 @@ namespace Windows
         {
         }
 
-        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, Vector2 anchor, ASCIIText256 renderer, WindowCloseCallback closeCallback)
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, Vector2 anchor, ASCIIText256 renderer, WindowCloseCallback closeCallback = default)
         {
             this.world = world;
             value = world.CreateEntity(new IsDestination(default, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size, anchor));
