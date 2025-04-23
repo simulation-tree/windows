@@ -9,8 +9,8 @@ namespace Windows.Tests
     {
         static WindowTests()
         {
-            MetadataRegistry.Load<WindowsTypeBank>();
-            MetadataRegistry.Load<RenderingTypeBank>();
+            MetadataRegistry.Load<WindowsMetadataBank>();
+            MetadataRegistry.Load<RenderingMetadataBank>();
         }
 
         protected override Schema CreateSchema()
