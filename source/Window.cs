@@ -18,7 +18,7 @@ namespace Windows
         public readonly WindowState State => GetComponent<IsWindow>().windowState;
         public readonly ref Vector4 Region => ref As<Destination>().Region;
         public readonly ref Vector4 ClearColor => ref As<Destination>().ClearColor;
-        public readonly ref ASCIIText256 RendererLabel => ref As<Destination>().RendererLabel;
+        public readonly ref RendererLabel RendererLabel => ref As<Destination>().RendererLabel;
 
         public readonly bool IsResizable
         {
@@ -158,27 +158,27 @@ namespace Windows
             }
         }
 
-        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, ASCIIText256 renderer, WindowCloseCallback closeCallback = default)
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, RendererLabel renderer, WindowCloseCallback closeCallback = default)
         {
             this.world = world;
             value = world.CreateEntity(new IsDestination(size, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size));
             CreateArray<DestinationExtension>();
         }
 
-        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, Span<char> renderer, WindowCloseCallback closeCallback)
-            : this(world, new ASCIIText256(title), position, size, new ASCIIText256(renderer), closeCallback)
+        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, RendererLabel renderer, WindowCloseCallback closeCallback)
+            : this(world, new ASCIIText256(title), position, size, renderer, closeCallback)
         {
         }
 
-        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, Vector2 anchor, ASCIIText256 renderer, WindowCloseCallback closeCallback = default)
+        public Window(World world, ASCIIText256 title, Vector2 position, Vector2 size, Vector2 anchor, RendererLabel renderer, WindowCloseCallback closeCallback = default)
         {
             this.world = world;
             value = world.CreateEntity(new IsDestination(default, renderer), new IsWindow(title, closeCallback), new WindowTransform(position, size, anchor));
             CreateArray<DestinationExtension>();
         }
 
-        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, Vector2 anchor, Span<char> renderer, WindowCloseCallback closeCallback)
-            : this(world, new ASCIIText256(title), position, size, anchor, new ASCIIText256(renderer), closeCallback)
+        public Window(World world, ReadOnlySpan<char> title, Vector2 position, Vector2 size, Vector2 anchor, RendererLabel renderer, WindowCloseCallback closeCallback)
+            : this(world, new ASCIIText256(title), position, size, anchor, renderer, closeCallback)
         {
         }
 
