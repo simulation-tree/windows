@@ -1,10 +1,10 @@
 ﻿namespace Windows.Components
 {
-    public readonly struct IsDisplay
+    public struct IsDisplay
     {
-        public readonly uint width;
-        public readonly uint height;
-        public readonly float refreshRate;
+        public uint width;
+        public uint height;
+        public float refreshRate;
 
         public IsDisplay(uint width, uint height, float refreshRate)
         {
