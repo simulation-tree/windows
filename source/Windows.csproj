@@ -14,16 +14,16 @@
         <Authors>popcron</Authors>
         <Company>simulation-tree</Company>
         <RepositoryUrl>https://github.com/simulation-tree/windows</RepositoryUrl>
-        <PackageId/>
+        <PackageId />
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\rendering\source\Rendering.csproj"/>
+        <ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
         <ProjectReference Include="..\..\types\generator\Types.Generator.csproj">
             <OutputItemType>Analyzer</OutputItemType>
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
-        <ProjectReference Include="..\..\worlds\core\Worlds.Core.csproj"/>
+        <ProjectReference Include="..\..\worlds\core\Worlds.Core.csproj" />
         <ProjectReference Include="..\..\worlds\generator\Worlds.Generator.csproj">
             <OutputItemType>Analyzer</OutputItemType>
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
