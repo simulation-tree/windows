@@ -33,9 +33,9 @@
 
   <ItemGroup>
     <Content Include="bin/Debug/net9.0/Windows.dll" Pack="true" PackagePath="tools/debug/Windows.dll" Visible="false"/>
-    <Content Include="bin/Debug/net9.0/Windows.xml" Pack="true" PackagePath="tools/debug/Windows.xml" Visible="false"/>
+    <Content Include="bin/Debug/net9.0/Windows.xml" Pack="true" PackagePath="tools/debug/Windows.xml" Visible="false" Condition="Exists('bin/Debug/net9.0/Windows.xml')"/>
     <Content Include="bin/Release/net9.0/Windows.dll" Pack="true" PackagePath="tools/release/Windows.dll" Visible="false"/>
-    <Content Include="bin/Release/net9.0/Windows.xml" Pack="true" PackagePath="tools/release/Windows.xml" Visible="false"/>
+    <Content Include="bin/Release/net9.0/Windows.xml" Pack="true" PackagePath="tools/release/Windows.xml" Visible="false" Condition="Exists('bin/Release/net9.0/Windows.xml')"/>
     <Content Include="build/Windows.targets" Pack="true" PackagePath="build/Windows.targets" Visible="false"/>
   </ItemGroup>
 
