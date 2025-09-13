@@ -33,7 +33,10 @@ namespace Windows.Components
 
         public readonly override int GetHashCode()
         {
-            return HashCode.Combine(position, size);
+            int hash = 17;
+            hash = hash * 31 + position.GetHashCode();
+            hash = hash * 31 + size.GetHashCode();
+            return hash;
         }
 
         public static bool operator ==(WindowTransform left, WindowTransform right)
